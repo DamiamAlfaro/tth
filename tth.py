@@ -2,7 +2,7 @@ import datetime
 import os
 
 
-def tth_a():
+def tth_a(): #part a) this function prepares to start; checks for errors (closed or open instances), returns the last instance quantity, and annotates the instance
     dat = str(datetime.datetime.now()).split(" ")
     calendar = dat[0].split("-")
     time = dat[1].split(":")
@@ -47,11 +47,32 @@ def tth_a():
 
 
 
-def tth_b(self):
+def tth_b(self): #past b) here we extract the integers representing the quantities of each instance to later graph them
+    integers = []
+    outsets = []
+    finishes = []
     with open(self,"r") as counts:
         ins = counts.readlines()
-        print(ins)
+        for out,fin in enumerate(ins):
+            if out % 2 == 0:
+                outsets.append(int(eval(fin[1:-1])[3])+round(int(eval(fin[1:-1])[4])/60,3))
+            else:
+                finishes.append(int(eval(fin[1:-1])[3])+round(int(eval(fin[1:-1])[4])/60,3))
 
+
+    for initial,last in zip(outsets,finishes):
+        integer = round(last - initial,3)
+        integers.append(integer)
+
+    return integers
+        
+
+def tth_c(self): #part c) graph the array of integers (amount of hours spend)
+    pass
+
+                    
+        
+    
 
 
 
@@ -60,7 +81,7 @@ def tth_b(self):
 
 if __name__ == "__main__":
     tth_a()
-    tth_b("tth.txt")
+    print(tth_b("tth.txt"))
 
 
 
