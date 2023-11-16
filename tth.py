@@ -1,5 +1,6 @@
 import datetime 
 import os
+import matplotlib.pyplot as plt
 
 
 def tth_a(): #part a) this function prepares to start; checks for errors (closed or open instances), returns the last instance quantity, and annotates the instance
@@ -49,6 +50,7 @@ def tth_a(): #part a) this function prepares to start; checks for errors (closed
 
 def tth_b(self): #past b) here we extract the integers representing the quantities of each instance to later graph them
     integers = []
+    finish_time = []
     outsets = []
     finishes = []
     with open(self,"r") as counts:
@@ -58,17 +60,27 @@ def tth_b(self): #past b) here we extract the integers representing the quantiti
                 outsets.append(int(eval(fin[1:-1])[3])+round(int(eval(fin[1:-1])[4])/60,3))
             else:
                 finishes.append(int(eval(fin[1:-1])[3])+round(int(eval(fin[1:-1])[4])/60,3))
+                finish_time.append(int(eval(fin[1:-1])[3])+round(int(eval(fin[1:-1])[4])/60,2))
 
 
     for initial,last in zip(outsets,finishes):
         integer = round(last - initial,3)
         integers.append(integer)
+    
+    
 
-    return integers
+    return integers,finish_time
         
 
 def tth_c(self): #part c) graph the array of integers (amount of hours spend)
-    pass
+    x = self[0]
+    y = self[1]
+    totalh = round(sum(x),2)
+    plt.scatter(x,y,color = "#093b5d")
+    plt.title(f"Hours = {totalh}")
+    plt.ylabel("Time of day")
+    plt.xlabel("Hours")
+    plt.show()
 
                     
         
@@ -81,7 +93,8 @@ def tth_c(self): #part c) graph the array of integers (amount of hours spend)
 
 if __name__ == "__main__":
     tth_a()
-    print(tth_b("tth.txt"))
+    print(tth_c(tth_b("tth.txt")))
+ 
 
 
 
