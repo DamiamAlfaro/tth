@@ -8,6 +8,18 @@ import matplotlib.pyplot as plt
 
 
 class tth_noting:
+    def getting_dates():
+        all_date = datetime.datetime.now()
+        date_string = str(all_date).split(" ")
+        matrix_date = date_string[0].split("-")
+        year, month, day = date_string[0].split("-")[0], date_string[0].split("-")[1], date_string[0].split("-")[2]
+        hour, minute, second = date_string[1].split(":")[0], date_string[1].split(":")[1], round(float(date_string[1].split(":")[2]),1)
+        return matrix_date, year, month, day, hour, minute, second
+
+
+
+
+
     def tth_b(self): #past b) here we extract the integers representing the quantities of each instance to later graph them
         integers = []
         finish_time = []
@@ -86,9 +98,21 @@ class tth_noting:
                 tth_noting.tth_c(tth_noting.tth_b(self))
             case _:
                 print("\nWRONG WORD\n")
+        
+        return calendar
 
-
-
+    def accuracy_rate():
+        total_questions = int(input("Total # Questions: "))
+        right_questions = int(input("Total # Right questions answered: "))
+        rate_float = round(right_questions/total_questions,3)
+        rate_percentage = float(rate_float * 100)
+        return rate_float, rate_percentage
+            
+    def recording_accuracy(self):
+        rates = tth_noting.accuracy_rate()
+        print(f"\nToday's Accuracy: {rates[1]}%\n")
+        with open(accuracy_file,"a") as file:
+            file.write(f"{tth_noting.getting_dates()[0]} = {rates[0]}\n")
 
 
 
@@ -98,11 +122,13 @@ if __name__ == "__main__":
     choice = input("-> ")
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
+    accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
     match str(choice).upper():
         case "PROGRAMMING":
             tth_noting.tth_a(programming_file)
         case "MATHEMATICS":
             tth_noting.tth_a(math_file)
+            tth_noting.recording_accuracy(accuracy_file)
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
 
