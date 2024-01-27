@@ -1,13 +1,14 @@
 import datetime 
 import os
 import matplotlib.pyplot as plt
+import ast
 
 
 
 
 
 
-class tth_noting:
+class tth:
     def getting_dates():
         all_date = datetime.datetime.now()
         date_string = str(all_date).split(" ")
@@ -17,10 +18,7 @@ class tth_noting:
         return matrix_date, year, month, day, hour, minute, second
 
 
-
-
-
-    def tth_b(self): #past b) here we extract the integers representing the quantities of each instance to later graph them
+    def hours_numeration(self): #past b) here we extract the integers representing the quantities of each instance to later graph them
         integers = []
         finish_time = []
         outsets = []
@@ -42,7 +40,7 @@ class tth_noting:
         return integers,finish_time
         
 
-    def tth_c(self): #part c) graph the array of integers (amount of hours spend)
+    def hours_visual(self): #part c) graph the array of integers (amount of hours spend)
         x = self[0]
         y = self[1]
         totalh = round(sum(x),2)
@@ -54,7 +52,7 @@ class tth_noting:
 
     
 
-    def tth_a(self): #part a) this function prepares to start; checks for errors (closed or open instances), returns the last instance quantity, and annotates the instance
+    def time_date_recording(self):
         dat = str(datetime.datetime.now()).split(" ")
         calendar = dat[0].split("-")
         time = dat[1].split(":")
@@ -95,7 +93,7 @@ class tth_noting:
                     else:
                         file.write("1"+str(outset)+"\n")
             case "VIEW":
-                tth_noting.tth_c(tth_noting.tth_b(self))
+                tth.hours_visual(tth.hours_numeration(self))
             case _:
                 print("\nWRONG WORD\n")
         
@@ -104,31 +102,52 @@ class tth_noting:
     def accuracy_rate():
         total_questions = int(input("Total # Questions: "))
         right_questions = int(input("Total # Right questions answered: "))
-        rate_float = round(right_questions/total_questions,3)
+        rate_float = round(right_questions/total_questions,4)
         rate_percentage = float(rate_float * 100)
         return rate_float, rate_percentage
             
     def recording_accuracy(self):
-        rates = tth_noting.accuracy_rate()
+        rates = tth.accuracy_rate()
         print(f"\nToday's Accuracy: {rates[1]}%\n")
         with open(accuracy_file,"a") as file:
-            file.write(f"{tth_noting.getting_dates()[0]} = {rates[0]}\n")
+            file.write(f"{tth.getting_dates()[0]} = {rates[0]}\n")
 
+    def days_worked(self):
+        days_worked = []
+        with open(self,"r") as file:
+            dates = file.readlines()
+        for instance in dates:
+            print(list(ast.literal_eval(instance[1:-1]).values())) #split between outsets and halts
 
+    
+    def analyzing_accuracy(self):
+        with open(self,"r") as file:
+            rates = file.readlines()
+        return rates
 
 
 if __name__ == "__main__":
-    print("\n[Programming] [Mathematics]\n")
-    choice = input("-> ")
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
     accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
+    print(tth.analyzing_accuracy(accuracy_file))
+    tth.days_worked(math_file)
+    print("\n[Programming] [Mathematics]\n")
+    choice = input("-> ")
     match str(choice).upper():
         case "PROGRAMMING":
-            tth_noting.tth_a(programming_file)
+            tth.time_date_recording(programming_file)
         case "MATHEMATICS":
-            tth_noting.tth_a(math_file)
-            tth_noting.recording_accuracy(accuracy_file)
+            tth.time_date_recording(math_file)
+            print("\nDone? [YES] [NO]\n")
+            done = input("-> ")
+            match str(done).upper():
+                case "YES":
+                    tth.recording_accuracy(accuracy_file)
+                case "NO":
+                    print("Then finish...")
+                case _:
+                    pass
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
 
