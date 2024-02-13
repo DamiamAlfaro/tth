@@ -2,11 +2,10 @@ import datetime
 import os
 import matplotlib.pyplot as plt
 import ast
-
-
-
-
-
+from collections import Counter
+import matplotlib.dates as mdates
+import numpy as np
+import json
 
 class tth:
     def getting_dates():
@@ -40,11 +39,11 @@ class tth:
         return integers,finish_time
         
 
-    def hours_visual(self): #part c) graph the array of integers (amount of hours spend)
+    def hours_visual(self):
         x = self[0]
         y = self[1]
         totalh = round(sum(x),2)
-        plt.scatter(x,y,color = "#093b5d")
+        plt.scatter(x, y, color='blue')
         plt.title(f"{choice.title()} | Hours = {totalh}")
         plt.ylabel("Time of day")
         plt.xlabel("Hours")
@@ -114,25 +113,48 @@ class tth:
 
     def days_worked(self):
         days_worked = []
+        list_first = []
         with open(self,"r") as file:
             dates = file.readlines()
         for instance in dates:
-            print(list(ast.literal_eval(instance[1:-1]).values())) #split between outsets and halts
+            l = list(ast.literal_eval(instance[1:-1]).values())
+            l_2 = l[0],l[1],l[2]
+            list_first.append(list(l_2))
+        # find a way to remove the repeated lists
 
     
     def analyzing_accuracy(self):
-        with open(self,"r") as file:
-            rates = file.readlines()
-        return rates
+        pass
+
+    def daily_hour_goal(self):
+        pass
+
+    def timeline(self):
+        print("\n[New] [View]\n")
+        action = input("-> ")
+        match str(action).upper():
+            case "NEW":
+                pass
+            case "VIEW":
+                pass
+        
+        return times
+
+        
+
+
 
 
 if __name__ == "__main__":
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
     accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
-    print(tth.analyzing_accuracy(accuracy_file))
-    tth.days_worked(math_file)
-    print("\n[Programming] [Mathematics]\n")
+    math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
+    programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
+    profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
+    ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
+    print(tth.timeline(math_milestones))
+    print("\n[Programming] [Mathematics] [Milestone]\n")
     choice = input("-> ")
     match str(choice).upper():
         case "PROGRAMMING":
@@ -148,6 +170,21 @@ if __name__ == "__main__":
                     print("Then finish...")
                 case _:
                     pass
+        case "MILESTONE":
+            print("\n[Programming] [IR] [Mathematics] [Profession]\n")
+            mil_impetus = input("-> ")
+            match str(mil_action).upper():
+                case "PROGRAMMING":
+                    tth.timeline(programming_timeline)
+                case "IR":
+                    tth.timeline(ir_timeline)
+                case "MATHEMATICS":
+                    tth.timeline(math_timeline)
+                case "PROFESSION":
+                    tth.timeline(profession_timeline)
+
+
+
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
 
