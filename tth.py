@@ -134,11 +134,26 @@ class tth:
         action = input("-> ")
         match str(action).upper():
             case "NEW":
-                pass
+                print("\nInput Date as: YYYY-MM-DD\n")
+                date = input("-> ")
+                print("\nWhat occurred that date?\n")
+                instance = input("-> ")
+                if os.path.getsize(self) == 0:
+                    new = [[],[]]
+                    with open(self,"w") as testing:
+                        json.dump(new,testing)
+                else:
+                    pass
+                
+                with open(self,"r") as file:
+                    timelines = json.load(file)
+                
+                return type(timelines)
+                   #is working, just convert it. 
+
             case "VIEW":
                 pass
         
-        return times
 
         
 
@@ -149,7 +164,7 @@ if __name__ == "__main__":
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
     accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
-    math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
+    math_milestones = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
     programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
     profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
     ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
