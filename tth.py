@@ -5,6 +5,7 @@ import ast
 from collections import Counter
 import matplotlib.dates as mdates
 import numpy as np
+import pandas as pd
 import json
 
 class tth:
@@ -129,13 +130,18 @@ class tth:
     def daily_hour_goal(self):
         pass
 
-    def timeline(self):
+    def timeline(self,mil_action):
+        sector = str(mil_action).title()
         print("\n[New] [View]\n")
         action = input("-> ")
         match str(action).upper():
             case "NEW":
                 print("\nInput Date as: YYYY-MM-DD\n")
-                date = input("-> ")
+                date = str(input("-> "))
+                try:
+                    datetime.datetime.strptime(date,"%Y-%m-%d")
+                except:
+                    return "\nDo not know how to read?..."
                 print("\nWhat occurred that date?\n")
                 instance = input("-> ")
                 if os.path.getsize(self) == 0:
@@ -147,12 +153,51 @@ class tth:
                 
                 with open(self,"r") as file:
                     timelines = json.load(file)
-                
-                return type(timelines)
-                   #is working, just convert it. 
+
+                timelines[0].append(date)
+                timelines[1].append(instance)
+
+                with open(self,'w') as file_again:
+                    json.dump(timelines,file_again)
 
             case "VIEW":
-                pass
+                with open(self,'r') as file:
+                    milestones = json.load(file)
+                
+                dates = milestones[0]
+                milestone = milestones[1]
+                setup = pd.DataFrame(data={"Date": dates,"Milestone": milestone})
+                setup["Date"] = pd.to_datetime(setup["Date"])
+                setup["Level"] = [np.random.randint(-6,-2) if (i%2)==0 else np.random.randint(2,6) for i in
+                                  range(len(setup))]
+                with plt.style.context("fivethirtyeight"):
+                    fig, ax = plt.subplots(figsize=(7,10))
+                    ax.plot([0,]* len(setup), setup.Date,"-o",color="black",markerfacecolor="white");
+                    ax.set_yticks(pd.date_range("2024-1-1","2024-12-30",freq="YS"), range(2024,2024));
+                    ax.set_xlim(-7,7);
+                    for idx in range(len(setup)):
+                        dt,product,level = setup["Date"][idx],setup["Milestone"][idx],setup["Level"][idx]
+                        dt_str = dt.strftime("%b-%Y")
+                        ax.annotate(dt_str+"\n"+product,xy=(0.1 if level>0 else -0.1,dt),
+                                    xytext=(level,dt),
+                                    arrowprops=dict(arrowstyle="-",color="red",linewidth=0.8),
+                                    va="center",fontsize=8);
+                        ax.spines[["left", "top", "right", "bottom"]].set_visible(False);
+                        ax.spines[["left"]].set_position(("axes", 0.5));
+                        ax.xaxis.set_visible(False);
+                        ax.set_title(f"{sector} Milestones", pad=10, loc="left",
+                                     fontsize=25, fontweight="bold");
+                        ax.grid(False)
+                plt.show()        
+
+
+
+
+                    
+
+                
+
+                
         
 
         
@@ -164,11 +209,10 @@ if __name__ == "__main__":
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
     accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
-    math_milestones = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
+    math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
     programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
     profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
     ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
-    print(tth.timeline(math_milestones))
     print("\n[Programming] [Mathematics] [Milestone]\n")
     choice = input("-> ")
     match str(choice).upper():
@@ -187,91 +231,18 @@ if __name__ == "__main__":
                     pass
         case "MILESTONE":
             print("\n[Programming] [IR] [Mathematics] [Profession]\n")
-            mil_impetus = input("-> ")
-            match str(mil_action).upper():
-                case "PROGRAMMING":
-                    tth.timeline(programming_timeline)
-                case "IR":
-                    tth.timeline(ir_timeline)
-                case "MATHEMATICS":
-                    tth.timeline(math_timeline)
-                case "PROFESSION":
-                    tth.timeline(profession_timeline)
-
-
+            mil_action = input("-> ")
+            match str(mil_action).title():
+                case "Programming":
+                    tth.timeline(programming_timeline,mil_action)
+                case "Ir":
+                    tth.timeline(ir_timeline,mil_action)
+                case "Mathematics":
+                    tth.timeline(math_timeline,mil_action)
+                case "Profession":
+                    tth.timeline(profession_timeline,mil_action)
 
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
-
-        
-            
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
