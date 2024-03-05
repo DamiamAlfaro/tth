@@ -212,13 +212,15 @@ if __name__ == "__main__":
     math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
     programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
     profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
+    profession_file = "/Users/damiamalfaro/tth/tth_profession.txt"
     ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
-    print("\n[Programming] [Mathematics] [Milestone]\n")
+    ir_file = "/Users/damiamalfaro/tth/tth_ir.txt"
+    print("\n[Programming] [Mathematics] [Profession] [IR & Bussiness]\n")
     choice = input("-> ")
-    match str(choice).upper():
-        case "PROGRAMMING":
+    match str(choice).title():
+        case "Programming":
             tth.time_date_recording(programming_file)
-        case "MATHEMATICS":
+        case "Mathematics":
             tth.time_date_recording(math_file)
             print("\nDone? [YES] [NO]\n")
             done = input("-> ")
@@ -229,20 +231,86 @@ if __name__ == "__main__":
                     print("Then finish...")
                 case _:
                     pass
-        case "MILESTONE":
-            print("\n[Programming] [IR] [Mathematics] [Profession]\n")
-            mil_action = input("-> ")
-            match str(mil_action).title():
-                case "Programming":
-                    tth.timeline(programming_timeline,mil_action)
-                case "Ir":
-                    tth.timeline(ir_timeline,mil_action)
-                case "Mathematics":
-                    tth.timeline(math_timeline,mil_action)
-                case "Profession":
-                    tth.timeline(profession_timeline,mil_action)
+            tth.timeline(math_timeline,choice)    
+        case "Profession":
+            tth.time_date_recording(profession_file)
+            tth.timeline(profession_timeline,choice)
+        case "Ir":
+            tth.time_date_recording(ir_file)
+            tth.timeline(ir_timeline,choice)
 
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
+
+        
+            
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
