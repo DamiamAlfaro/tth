@@ -52,7 +52,7 @@ class tth:
 
     
 
-    def time_date_recording(self):
+    def time_date_recording(self,answer):
         dat = str(datetime.datetime.now()).split(" ")
         calendar = dat[0].split("-")
         time = dat[1].split(":")
@@ -76,8 +76,7 @@ class tth:
                     th = finish_time - outset_time 
                     print(f"\nLast flow = {round(th,2)} hours\n")
 
-        the = input("\n[OUTSET] [HALT] [VIEW]\n\n-> ")
-        match str(the).upper():
+        match str(answer).upper():
             case "OUTSET":
                 with open(self,"r+") as file:
                     check = file.readlines()
@@ -99,7 +98,8 @@ class tth:
         
         return calendar
 
-    def accuracy_rate():
+    def accuracy_rate(): 
+        #here you need to record the total of questions, and the correct ones in the file as well.
         total_questions = int(input("Total # Questions: "))
         right_questions = int(input("Total # Right questions answered: "))
         rate_float = round(right_questions/total_questions,4)
@@ -193,19 +193,10 @@ class tth:
 
 
 
-                    
-
-                
-
-                
-        
-
-        
-
-
-
-
 if __name__ == "__main__":
+    # we ought to find a way to reduce the amount of files here, I mean, sure, you only have
+    # a couple of sectors, but the app will have n files by the user, a complex user.
+    # we need a way to handle these files neatly. 
     programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
     math_file = "/Users/damiamalfaro/tth/tth_math.txt"
     accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
@@ -218,26 +209,18 @@ if __name__ == "__main__":
     print("\n[Programming] [Mathematics] [Profession] [IR & Bussiness]\n")
     choice = input("-> ")
     match str(choice).title():
-        case "Programming":
-            tth.time_date_recording(programming_file)
-        case "Mathematics":
-            tth.time_date_recording(math_file)
-            print("\nDone? [YES] [NO]\n")
-            done = input("-> ")
-            match str(done).upper():
-                case "YES":
+        case "Mathematics" | "Programming" | "Ir" | "Profession":
+            print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
+            answer = input("-> ")
+            match str(answer).upper():
+                case "OUTSET" | "HALT" | "VIEW":
+                    tth.time_date_recording(math_file,answer)
+                case "TEST":
                     tth.recording_accuracy(accuracy_file)
-                case "NO":
-                    print("Then finish...")
+                case "MILESTONE":
+                    tth.timeline(math_timeline,choice)
                 case _:
                     pass
-            tth.timeline(math_timeline,choice)    
-        case "Profession":
-            tth.time_date_recording(profession_file)
-            tth.timeline(profession_timeline,choice)
-        case "Ir":
-            tth.time_date_recording(ir_file)
-            tth.timeline(ir_timeline,choice)
 
         case _:
             print("\nI'm sorry?...Do you know how to type?...\n")
@@ -247,70 +230,6 @@ if __name__ == "__main__":
 
 
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
