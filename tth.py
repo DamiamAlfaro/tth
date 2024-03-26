@@ -7,6 +7,7 @@ import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import json
+import subprocess
 
 class tth:
     def getting_dates():
@@ -40,7 +41,7 @@ class tth:
         return integers,finish_time
         
 
-    def hours_visual(self):
+    def hours_visual(self,choice):
         x = self[0]
         y = self[1]
         totalh = round(sum(x),2)
@@ -50,7 +51,6 @@ class tth:
         plt.xlabel("Hours")
         plt.show()
 
-    
 
     def time_date_recording(self,answer):
         dat = str(datetime.datetime.now()).split(" ")
@@ -61,29 +61,29 @@ class tth:
         for a in range(len(instance)):
             outset[a] = instance[a]
 
-        if os.path.getsize(self) == 0:
-            pass
-        else:
-            with open(self,"r") as file2:
-                records = file2.readlines()
-                if int(records[-1:][0][0]) == 0:
-                    pass
-                else:
-                    lastoutset = eval(records[-2:][0][1:-1])
-                    lastfinish = eval(records[-2:][1][1:-1])
-                    outset_time = int(lastoutset[3])+round(int(lastoutset[4])/60,2)
-                    finish_time = int(lastfinish[3])+round(int(lastfinish[4])/60,2)
-                    th = finish_time - outset_time 
-                    print(f"\nLast flow = {round(th,2)} hours\n")
+        with open(self,"r") as file2:
+            records = file2.readlines()
+            if int(records[-1:][0][0]) == 0:
+                pass
+            else:
+                lastoutset = eval(records[-2:][0][1:-1])
+                lastfinish = eval(records[-2:][1][1:-1])
+                outset_time = int(lastoutset[3])+round(int(lastoutset[4])/60,2)
+                finish_time = int(lastfinish[3])+round(int(lastfinish[4])/60,2)
+                th = finish_time - outset_time 
+                print(f"\nLast flow = {round(th,2)} hours\n")
 
         match str(answer).upper():
             case "OUTSET":
                 with open(self,"r+") as file:
                     check = file.readlines()
-                    if int(check[-1:][0][0]) == 0:
-                        raise TypeError("Close your counting dumbass.")
-                    else:
-                        file.write("0"+str(outset)+"\n")
+                    if os.path.getsize(self) == 0:
+                        pass
+                    else:   
+                        if int(check[-1:][0][0]) == 0:
+                            raise TypeError("Close your counting dumbass.")
+                        else:
+                            file.write("0"+str(outset)+"\n")
             case "HALT":
                 with open(self,"r+") as file:
                     check = file.readlines()
@@ -92,7 +92,7 @@ class tth:
                     else:
                         file.write("1"+str(outset)+"\n")
             case "VIEW":
-                tth.hours_visual(tth.hours_numeration(self))
+                tth.hours_visual(tth.hours_numeration(self),answer)
             case _:
                 print("\nWRONG WORD\n")
         
@@ -125,9 +125,6 @@ class tth:
 
     
     def analyzing_accuracy(self):
-        pass
-
-    def daily_hour_goal(self):
         pass
 
     def timeline(self,mil_action):
@@ -191,45 +188,132 @@ class tth:
                 plt.show()        
 
 
+    def main():
+        programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
+        math_file = "/Users/damiamalfaro/tth/tth_math.txt"
+        accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
+        math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
+        programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
+        profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
+        profession_file = "/Users/damiamalfaro/tth/tth_profession.txt"
+        ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
+        ir_file = "/Users/damiamalfaro/tth/tth_ir.txt"
+        print("\n[Programming] [Mathematics] [Profession] [IR & Bussiness]\n")
+        choice = input("-> ")
+        match str(choice).title():
+            case "Mathematics" | "Programming" | "Ir" | "Profession":
+                print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
+                answer = input("-> ")
+                match str(answer).upper():
+                    case "OUTSET" | "HALT" | "VIEW":
+                        tth.time_date_recording(math_file,answer)
+                    case "TEST":
+                        tth.recording_accuracy(accuracy_file)
+                    case "MILESTONE":
+                        tth.timeline(math_timeline,choice)
+                    case _:
+                        pass
 
+            case _:
+                print("\nI'm sorry?...Do you know how to type?...\n")
+
+       
+    def testing():
+        main_source = "/Users/damiamalfaro/tth"
+        sectors = os.listdir(main_source)
+        print("\n[Programming] [Mathematics] [Profession] [IR]\n")
+        choice = input("-> ")
+        match str(choice).title():
+            case "Mathematics" | "Programming" | "Ir" | "Profession":
+                current_folder = os.path.join(main_source,choice)
+                files = os.listdir(current_folder)
+                print(files)
+                milestone_record, time_record = os.path.join(current_folder,files[0]), os.path.join(current_folder,files[1])
+                print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
+                answer = input("-> ")
+                match str(answer).upper():
+                    case "OUTSET" | "HALT" | "VIEW":
+                        tth.time_date_recording(time_record,answer)
+                    case "TEST":
+                        pass
+                    case "MILESTONE":
+                        tth.timeline(milestone_record,choice)
+                    case _:
+                        pass
+
+            case _:
+                print("\nI'm sorry?...Do you know how to type?...\n")
 
 if __name__ == "__main__":
-    # we ought to find a way to reduce the amount of files here, I mean, sure, you only have
-    # a couple of sectors, but the app will have n files by the user, a complex user.
-    # we need a way to handle these files neatly. 
-    programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
-    math_file = "/Users/damiamalfaro/tth/tth_math.txt"
-    accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
-    math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
-    programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
-    profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
-    profession_file = "/Users/damiamalfaro/tth/tth_profession.txt"
-    ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
-    ir_file = "/Users/damiamalfaro/tth/tth_ir.txt"
-    print("\n[Programming] [Mathematics] [Profession] [IR & Bussiness]\n")
-    choice = input("-> ")
-    match str(choice).title():
-        case "Mathematics" | "Programming" | "Ir" | "Profession":
-            print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
-            answer = input("-> ")
-            match str(answer).upper():
-                case "OUTSET" | "HALT" | "VIEW":
-                    tth.time_date_recording(math_file,answer)
-                case "TEST":
-                    tth.recording_accuracy(accuracy_file)
-                case "MILESTONE":
-                    tth.timeline(math_timeline,choice)
-                case _:
-                    pass
-
-        case _:
-            print("\nI'm sorry?...Do you know how to type?...\n")
-
-        
+    tth.testing()
             
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
