@@ -188,47 +188,28 @@ class tth:
                 plt.show()        
 
 
-    def main():
-        programming_file = "/Users/damiamalfaro/tth/tth_programming.txt"
-        math_file = "/Users/damiamalfaro/tth/tth_math.txt"
-        accuracy_file = "/Users/damiamalfaro/tth/tth_math_accuracy.txt"
-        math_timeline = "/Users/damiamalfaro/tth/tth_math_milestones.json" 
-        programming_timeline = "/Users/damiamalfaro/tth/tth_programming_timeline.json"
-        profession_timeline = "/Users/damiamalfaro/tth/tth_profession_timeline.json"
-        profession_file = "/Users/damiamalfaro/tth/tth_profession.txt"
-        ir_timeline = "/Users/damiamalfaro/tth/tth_ir_timeline.json"
-        ir_file = "/Users/damiamalfaro/tth/tth_ir.txt"
-        print("\n[Programming] [Mathematics] [Profession] [IR & Bussiness]\n")
-        choice = input("-> ")
-        match str(choice).title():
-            case "Mathematics" | "Programming" | "Ir" | "Profession":
-                print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
-                answer = input("-> ")
-                match str(answer).upper():
-                    case "OUTSET" | "HALT" | "VIEW":
-                        tth.time_date_recording(math_file,answer)
-                    case "TEST":
-                        tth.recording_accuracy(accuracy_file)
-                    case "MILESTONE":
-                        tth.timeline(math_timeline,choice)
-                    case _:
-                        pass
+    def choosing_file(self,choice):
+        time_record = []
+        milestone_record = []
+        sectors = os.listdir(self)
+        current_folder = os.path.join(self,choice)
+        files = os.listdir(current_folder)
+        for file in files:
+            if file.endswith('.txt'):
+                time_record.append(os.path.join(current_folder,file))
+            elif file.endswith('.json'):
+                milestone_record.append(os.path.join(current_folder,file))
+        return time_record[0], milestone_record[0]
 
-            case _:
-                print("\nI'm sorry?...Do you know how to type?...\n")
 
-       
     def testing():
-        main_source = "/Users/damiamalfaro/tth"
-        sectors = os.listdir(main_source)
+        main_source = "/Users/damiamalfaro/tth" # the folder of your choice, keep in mind this folder has folders within it.
         print("\n[Programming] [Mathematics] [Profession] [IR]\n")
-        choice = input("-> ")
-        match str(choice).title():
+        choice = input("-> ").title()
+        match choice:
             case "Mathematics" | "Programming" | "Ir" | "Profession":
-                current_folder = os.path.join(main_source,choice)
-                files = os.listdir(current_folder)
-                print(files)
-                milestone_record, time_record = os.path.join(current_folder,files[0]), os.path.join(current_folder,files[1])
+                time_record = tth.choosing_file(main_source,choice)[0]
+                milestone_record = tth.choosing_file(main_source,choice)[1]
                 print("\n[OUTSET] [HALT] [VIEW] [TEST] [MILESTONE]\n")
                 answer = input("-> ")
                 match str(answer).upper():
@@ -247,73 +228,3 @@ class tth:
 if __name__ == "__main__":
     tth.testing()
             
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
